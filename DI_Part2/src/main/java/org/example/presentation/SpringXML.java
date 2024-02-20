@@ -1,12 +1,11 @@
 package org.example.presentation;
 
-import org.example.Bean;
-import org.example.ConstructorArg;
-import org.example.Beans;
+import org.example.xml.Bean;
+import org.example.xml.ConstructorArg;
+import org.example.xml.Beans;
 import org.example.dao.IDao;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 
@@ -19,11 +18,6 @@ public class SpringXML {
         Beans beans = (Beans) jaxbUnmarshaller.unmarshal(xmlFile);
 
         for (Bean bean : beans.getBeans()) {
-            Class classObject = Class.forName(bean.getClazz());
-            IDao dao = (IDao) classObject.newInstance();
-
-
-
             System.out.println("Bean id: " + bean.getId());
             System.out.println("Bean class: " + bean.getClazz());
             ConstructorArg constructorArg = bean.getConstructorArg();

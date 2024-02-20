@@ -1,4 +1,6 @@
-package org.example;
+package org.example.xml;
+
+import org.example.xml.Bean;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.example;
+package org.example.xml;
 
 import javax.xml.bind.annotation.*;
 
