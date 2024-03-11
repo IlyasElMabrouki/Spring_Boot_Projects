@@ -21,11 +21,13 @@ public class PatientController {
     @GetMapping(value = "/index")
     public String index(Model model,
                         @RequestParam(name = "page", defaultValue = "0") int p,
-                        @RequestParam(name = "size", defaultValue = "5") int s){
-        Page<Patient> pagePatients = patientRepository.findAll(PageRequest.of(p, s, Sort.unsorted()));
+                        @RequestParam(name = "size", defaultValue = "5") int s,
+                        @RequestParam(name = "keyword", defaultValue = "") String kw){
+        Page<Patient> pagePatients = patientRepository.search(kw, PageRequest.of(p, s, Sort.unsorted()));
         model.addAttribute("listPatients", pagePatients.getContent());
         model.addAttribute("pages", new int[pagePatients.getTotalPages()]);
         model.addAttribute("currentPage", p);
+        model.addAttribute("keyword", kw);
         return "patients";
     }
 }
