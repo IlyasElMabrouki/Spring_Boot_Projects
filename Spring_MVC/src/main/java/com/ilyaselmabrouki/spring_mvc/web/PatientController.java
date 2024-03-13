@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -40,6 +41,12 @@ public class PatientController {
     @GetMapping(value = "/formPatient")
     public String formPatient(Model model){
         model.addAttribute("patient", new Patient());
+        return "formPatient";
+    }
+
+    @PostMapping(path = "/save")
+    public String save(Model model, Patient patient){
+        patientRepository.save(patient);
         return "formPatient";
     }
 }
