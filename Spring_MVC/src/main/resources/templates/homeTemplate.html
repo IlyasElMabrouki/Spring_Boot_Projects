@@ -20,11 +20,10 @@
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/formPatient}">Add Patient</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/index}">Search</a>
-            </li>
         </ul>
-
+        <form class="form-inline" method="get" th:action="@{index}">
+            <input class="form-control" type="search" placeholder="Search" name="keyword" th:value="${keyword}"/>
+        </form>
         <ul class="navbar nav">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
