@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @SpringBootApplication
-public class SpringBootJpaApplication implements CommandLineRunner {
+public class SpringBootJpaApplication {
 
     @Autowired
     private PatientRepository patientRepository;
@@ -31,32 +31,39 @@ public class SpringBootJpaApplication implements CommandLineRunner {
         patientRepository.save(patient);
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        patientRepository.save(new Patient(null, "Patient1", new Date(), false, 10));
-        patientRepository.save(new Patient(null, "Patient2", new Date(), true, 20));
-        patientRepository.save(new Patient(null, "Patient3", new Date(), false, 30));
+    //@Override
+    /*public void run(String... args) throws Exception {
+        //Add patients
+        patientRepository.save(new Patient(null, "Patient1", new Date(), false, 10, null));
+        patientRepository.save(new Patient(null, "Patient2", new Date(), true, 20,null));
+        patientRepository.save(new Patient(null, "Patient3", new Date(), false, 30, null));
 
+        //Get patients
         List<Patient> patientsV1 = patientRepository.findAll();
         System.out.println("Liste des patients:");
         patientsV1.forEach(p -> {
             System.out.println(p.toString());
         });
 
+        //Search patients
         List<Patient> searchPatients = patientRepository.searchPatientByNom("Patient1");
         System.out.println("Liste des patients cherchés:");
         searchPatients.forEach(p -> {
             System.out.println(p.toString());
         });
 
-        updatePatient(new Patient(1L, "Patient4", new Date(), true, 20));
+        //Update patients
+        updatePatient(new Patient(1L, "Patient4", new Date(), true, 20, null));
+        //patientRepository.save(new Patient(1L, "Patient4", new Date(), true, 20, null));
 
+        //Delete patients
         patientRepository.delete(patientRepository.findById(3L).get());
 
+        //Get new version of patients
         List<Patient> patientsV2 = patientRepository.findAll();
         System.out.println("Liste des patients:");
         patientsV2.forEach(p -> {
             System.out.println(p.toString());
         });
-    }
+    }*/
 }
