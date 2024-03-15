@@ -18,6 +18,6 @@ public class Patient {
     private Date dateNaissance;
     private boolean malade;
     private int score;
-    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
     private Collection<RendezVous> rendezVous;
 }
