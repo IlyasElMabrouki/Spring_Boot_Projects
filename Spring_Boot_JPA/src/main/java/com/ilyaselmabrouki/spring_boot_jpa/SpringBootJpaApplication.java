@@ -1,16 +1,12 @@
 package com.ilyaselmabrouki.spring_boot_jpa;
 
 import com.ilyaselmabrouki.spring_boot_jpa.entities.*;
-import com.ilyaselmabrouki.spring_boot_jpa.repositories.ConsultationRepository;
-import com.ilyaselmabrouki.spring_boot_jpa.repositories.MedecinRepository;
-import com.ilyaselmabrouki.spring_boot_jpa.repositories.PatientRepository;
-import com.ilyaselmabrouki.spring_boot_jpa.repositories.RendezVousRepository;
+import com.ilyaselmabrouki.spring_boot_jpa.service.IHospitalService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.lang.constant.Constable;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
@@ -23,13 +19,9 @@ public class SpringBootJpaApplication {
     }
 
     @Bean
-    CommandLineRunner start(
-            PatientRepository patientRepository,
-            MedecinRepository medecinRepository,
-            RendezVousRepository rendezVousRepository,
-            ConsultationRepository consultationRepository) {
+    CommandLineRunner start(IHospitalService hospitalService) {
         return args -> {
-            /*
+
             //Add medecins
             Stream.of("Medecin1", "Medecin2", "Medecin3")
                     .forEach(name ->{
@@ -37,28 +29,9 @@ public class SpringBootJpaApplication {
                         medecin.setNom(name);
                         medecin.setEmail(name.toLowerCase() + "@gmail.com");
                         medecin.setSpecialite("Cardio");
-                        medecinRepository.save(medecin);
+                        hospitalService.saveMedecin(medecin);
                     });
 
-            //Add Rendez-Vous
-            Patient patient = patientRepository.findByNom("Patient4");
-            Medecin medecin = medecinRepository.findByNom("Medecin4");
-
-            RendezVous rendezVous = new RendezVous();
-            rendezVous.setDate(new Date());
-            rendezVous.setStatus(StatusRDV.CONFIRMED);
-            rendezVous.setPatient(patient);
-            rendezVous.setMedecin(medecin);
-            rendezVousRepository.save(rendezVous);*/
-
-            //Add Consultation
-            Consultation consultation = new Consultation();
-            consultation.setDate(new Date());
-            consultation.setRapport("Rapport ...");
-            consultation.setRendezVous(rendezVousRepository.findById(1L).orElse(null));
-            consultationRepository.save(consultation);
-
-            /*
             //Add patients
             Stream.of("Patient1", "Patient2", "Patient3")
                     .forEach(name ->{
@@ -67,30 +40,31 @@ public class SpringBootJpaApplication {
                         patient.setDateNaissance(new Date());
                         patient.setMalade(false);
                         patient.setScore(0);
-                        patientRepository.save(patient);
+                        hospitalService.savePatient(patient);
                     });
 
-            //Get patients
-            List<Patient> patientsV1 = patientRepository.findAll();
-            System.out.println("Liste des patients:");
-            patientsV1.forEach(p -> System.out.println(p.toString()));
+            //Add Rendez-Vous
+            RendezVous rendezVous = new RendezVous();
+            rendezVous.setDate(new Date());
+            rendezVous.setStatus(StatusRDV.CONFIRMED);
+            Patient patient = hospitalService.searchPatient("Patient1");
+            Medecin medecin = hospitalService.searchMedecin("Medecin1");
+            rendezVous.setPatient(patient);
+            rendezVous.setMedecin(medecin);
+            RendezVous savedRDV = hospitalService.saveRDV(rendezVous);
 
-            //Search patients
-            List<Patient> searchPatients = patientRepository.searchPatientByNom("Patient1");
-            System.out.println("Liste des patients cherchés:");
-            searchPatients.forEach(p -> System.out.println(p.toString()));
+            //Add Consultation
+            Consultation consultation = new Consultation();
+            consultation.setDate(new Date());
+            consultation.setRapport("Rapport ...");
+            consultation.setRendezVous(savedRDV);
+            hospitalService.saveConsultation(consultation);
 
-            //Update patients
-            //updatePatient(new Patient(1L, "Patient4", new Date(), true, 20, null));
-            patientRepository.save(new Patient(1L, "Patient4", new Date(), true, 20, null));
+            //Update patient
+            hospitalService.updatePatient(new Patient(1L, "Patient4", new Date(), true, 20, null));
 
-            //Delete patients
-            patientRepository.delete(patientRepository.findById(3L).get());
-
-            //Get new version of patients
-            List<Patient> patientsV2 = patientRepository.findAll();
-            System.out.println("Liste des patients:");
-            patientsV2.forEach(p -> System.out.println(p.toString()));*/
+            //Delete patient
+            hospitalService.deletePatient(hospitalService.searchPatient("Patient3"));
         };
     }
 }
