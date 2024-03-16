@@ -1,14 +1,16 @@
 package com.ilyaselmabrouki.spring_boot_jpa;
 
-import com.ilyaselmabrouki.spring_boot_jpa.entities.Medecin;
-import com.ilyaselmabrouki.spring_boot_jpa.entities.Patient;
+import com.ilyaselmabrouki.spring_boot_jpa.entities.*;
+import com.ilyaselmabrouki.spring_boot_jpa.repositories.ConsultationRepository;
 import com.ilyaselmabrouki.spring_boot_jpa.repositories.MedecinRepository;
 import com.ilyaselmabrouki.spring_boot_jpa.repositories.PatientRepository;
+import com.ilyaselmabrouki.spring_boot_jpa.repositories.RendezVousRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.lang.constant.Constable;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
@@ -21,17 +23,42 @@ public class SpringBootJpaApplication {
     }
 
     @Bean
-    CommandLineRunner start(PatientRepository patientRepository, MedecinRepository medecinRepository) {
+    CommandLineRunner start(
+            PatientRepository patientRepository,
+            MedecinRepository medecinRepository,
+            RendezVousRepository rendezVousRepository,
+            ConsultationRepository consultationRepository) {
         return args -> {
+            /*
             //Add medecins
             Stream.of("Medecin1", "Medecin2", "Medecin3")
                     .forEach(name ->{
                         Medecin medecin = new Medecin();
                         medecin.setNom(name);
+                        medecin.setEmail(name.toLowerCase() + "@gmail.com");
                         medecin.setSpecialite("Cardio");
                         medecinRepository.save(medecin);
                     });
 
+            //Add Rendez-Vous
+            Patient patient = patientRepository.findByNom("Patient4");
+            Medecin medecin = medecinRepository.findByNom("Medecin4");
+
+            RendezVous rendezVous = new RendezVous();
+            rendezVous.setDate(new Date());
+            rendezVous.setStatus(StatusRDV.CONFIRMED);
+            rendezVous.setPatient(patient);
+            rendezVous.setMedecin(medecin);
+            rendezVousRepository.save(rendezVous);*/
+
+            //Add Consultation
+            Consultation consultation = new Consultation();
+            consultation.setDate(new Date());
+            consultation.setRapport("Rapport ...");
+            consultation.setRendezVous(rendezVousRepository.findById(1L).orElse(null));
+            consultationRepository.save(consultation);
+
+            /*
             //Add patients
             Stream.of("Patient1", "Patient2", "Patient3")
                     .forEach(name ->{
@@ -63,7 +90,7 @@ public class SpringBootJpaApplication {
             //Get new version of patients
             List<Patient> patientsV2 = patientRepository.findAll();
             System.out.println("Liste des patients:");
-            patientsV2.forEach(p -> System.out.println(p.toString()));
+            patientsV2.forEach(p -> System.out.println(p.toString()));*/
         };
     }
 }

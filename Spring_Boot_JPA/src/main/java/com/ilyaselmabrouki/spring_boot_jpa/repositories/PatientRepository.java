@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
-    @Query("select p from Patient p where p.nom like %:nom%")
-    List<Patient> searchPatientByNom(@Param("nom") String nom);
+    Patient findByNom(String nom);
 
 }
