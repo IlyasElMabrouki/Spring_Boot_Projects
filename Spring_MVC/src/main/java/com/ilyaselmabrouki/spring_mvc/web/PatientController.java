@@ -66,4 +66,8 @@ public class PatientController {
         return "redirect:/index?page="+page+"&keyword="+keyword;
     }
 
+    @GetMapping("/")
+    public String home(){
+        return "redirect:/index";
+    }
 }
